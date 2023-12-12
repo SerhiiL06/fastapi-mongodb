@@ -17,4 +17,8 @@ client = MongoClient(uri)
 
 db = client.test_db
 
-collection_name = db["test_collection"]
+category = db["category"]
+
+post = db["post"]
+
+user = db["user"]

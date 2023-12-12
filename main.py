@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from dotenv import load_dotenv
-from routers.routers import todo_router
+from src.blog.routers import blog_router
+from src.users.routets import users_router
 
 
-load_dotenv()
 app = FastAPI()
 
 
-app.include_router(todo_router)
+app.include_router(blog_router)
+app.include_router(users_router)
