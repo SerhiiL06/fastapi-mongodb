@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Response, status, Query
 from database.connection import category, post
-from database.logic import list_serial, retrieve_post_serial
+from database.serializers import list_serial, retrieve_post_serial
 from .schemes import ReadPost, CreateUpdatePost, CategoryScheme
+from src.users.authentication import current_user
 from bson.errors import InvalidId
 from bson import ObjectId
 
@@ -10,7 +11,11 @@ blog_router = APIRouter()
 
 
 @blog_router.get("/")
-async def get_post_list(is_pub: bool = Query(None)):
+async def get_post_list(user: current_user, is_pub: bool = Query(None)):
+    if user.get("role") != "admin":
+        raise HTTPException(
+            status_code=403, detail="you don't have permissions for this"
+        )
     result = list_serial(post.find())
 
     if bool is not None:

@@ -1,4 +1,11 @@
 from pydantic import BaseModel, EmailStr, ConfigDict
+from typing import Literal
+from enum import Enum, auto
+
+
+class Roles(Enum):
+    DEFAULT = auto()
+    ADMIN = auto()
 
 
 class BaseUser(BaseModel):
@@ -19,3 +26,8 @@ class ChangePasswordScheme(BaseModel):
     old_password: str
     new_password1: str
     new_password2: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

@@ -2,12 +2,13 @@ from fastapi import HTTPException, status
 from database.connection import user
 from .password import HashedPassword, PasswordIncorrect
 from .exceptions import UserAbsent
+from datetime import datetime
 
 
 class UserManager:
     __password_operations = HashedPassword()
 
-    def create_user(self, user_data):
+    def create_user(self, user_data, superuser=False):
         self.check_exists_user(user_data.email)
         correct_password = self.comparison_password(
             user_data.password1, user_data.password2
@@ -17,7 +18,20 @@ class UserManager:
             correct_password
         )
 
-        user.insert_one({"email": user_data.email, "password": hash_password})
+        if superuser:
+            role = "admin"
+
+        else:
+            role = "default"
+
+        user.insert_one(
+            {
+                "email": user_data.email,
+                "password": hash_password,
+                "role": role,
+                "created": datetime.utcnow(),
+            }
+        )
 
         return True
 
