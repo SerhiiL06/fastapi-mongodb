@@ -1,13 +1,14 @@
-from database.connection import user
-from database.serializers import retrieve_user_serial, list_of_user_serial
-from .schemes import RegisterUser, LoginUser, BaseModel, Token
-from .logic import UserManager
-from .authentication import UserAuth, current_user
-from fastapi import APIRouter, HTTPException, Response
-from fastapi import status, Depends
-from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated, List
 
+from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi.security import OAuth2PasswordRequestForm
+
+from database.connection import user
+from database.serializers import list_of_user_serial, retrieve_user_serial
+
+from .authentication import UserAuth, current_user
+from .logic import UserManager
+from .schemes import BaseModel, LoginUser, RegisterUser, Token
 
 users_router = APIRouter(prefix="/users", tags=["users"])
 

@@ -1,8 +1,11 @@
-from fastapi import HTTPException, status
-from database.connection import user
-from .password import HashedPassword, PasswordIncorrect
-from .exceptions import UserAbsent
 from datetime import datetime
+
+from fastapi import HTTPException, status
+
+from database.connection import user
+
+from .exceptions import NotAdmin, UserAbsent
+from .password import HashedPassword, PasswordIncorrect
 
 
 class UserManager:
@@ -53,3 +56,8 @@ class UserManager:
             )
 
         return password1
+
+
+def check_admin_role(data: dict):
+    if data.get("role") != "admin":
+        raise NotAdmin(detail="you don't have permissions for this action")

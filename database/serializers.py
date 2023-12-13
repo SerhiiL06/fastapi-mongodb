@@ -16,7 +16,12 @@ def list_serial(todos):
 
 
 def retrieve_user_serial(user):
-    data = {"id": str(user["_id"]), "email": user["email"]}
+    data = {
+        "id": str(user["_id"]),
+        "email": user["email"],
+        "role": user["role"],
+        "created": user["created"],
+    }
     return data
 
 

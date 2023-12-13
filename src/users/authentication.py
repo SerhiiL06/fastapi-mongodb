@@ -1,15 +1,18 @@
-from database.connection import user
-from .password import HashedPassword, PasswordIncorrect
-from .exceptions import UserAbsent
-from fastapi import status, HTTPException, Depends
-from .schemes import Token
-from fastapi.security import OAuth2PasswordBearer
+import os
 from datetime import datetime, timedelta
+from typing import Annotated
+
 from dotenv import load_dotenv
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from jose.exceptions import JWTError
-from typing import Annotated
-import os
+
+from database.connection import user
+
+from .exceptions import UserAbsent
+from .password import HashedPassword, PasswordIncorrect
+from .schemes import Token
 
 load_dotenv()
 
@@ -47,7 +50,7 @@ class UserAuth:
 
     @classmethod
     def create_access_token(csl, email: str, role: str) -> dict:
-        exp = datetime.utcnow() + timedelta(minutes=15)
+        exp = datetime.utcnow() + timedelta(minutes=30)
         payload = {"email": email, "role": role, "exp": exp}
 
         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")

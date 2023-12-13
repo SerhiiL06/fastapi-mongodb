@@ -1,11 +1,12 @@
-from fastapi import APIRouter, HTTPException, Response, status, Query
+from bson import ObjectId
+from bson.errors import InvalidId
+from fastapi import APIRouter, HTTPException, Query, Response, status
+
 from database.connection import category, post
 from database.serializers import list_serial, retrieve_post_serial
-from .schemes import ReadPost, CreateUpdatePost, CategoryScheme
 from src.users.authentication import current_user
-from bson.errors import InvalidId
-from bson import ObjectId
 
+from .schemes import CategoryScheme, CreateUpdatePost, ReadPost
 
 blog_router = APIRouter()
 
@@ -36,9 +37,12 @@ async def get_retrieve_post(id: str):
 
 
 @blog_router.post("/")
-async def create_post(data: CreateUpdatePost):
+async def create_post(data: CreateUpdatePost, user: current_user):
     if not data.image:
         del data.image
+
+    data.author = user.get("email")
+
     post.insert_one(data.model_dump())
 
     return Response(content="create", status_code=status.HTTP_201_CREATED)

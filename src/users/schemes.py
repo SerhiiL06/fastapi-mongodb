@@ -1,6 +1,7 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
-from typing import Literal
 from enum import Enum, auto
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class Roles(Enum):

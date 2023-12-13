@@ -1,8 +1,9 @@
 from typing import Any, Dict, Optional
-from typing_extensions import Annotated, Doc
+
 from fastapi import status
-from passlib.context import CryptContext
 from fastapi.exceptions import HTTPException
+from passlib.context import CryptContext
+from typing_extensions import Annotated, Doc
 
 bcrypt = CryptContext(schemes=["bcrypt"])
 
